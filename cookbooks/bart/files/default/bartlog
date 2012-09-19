@@ -1,0 +1,66 @@
+#!/usr/bin/bash
+#
+# bartlog:      benr@cuddletech.com (6/24/09)
+# -------------------------------------------
+# BART wrapper to be run from cron and output 
+#  changes to syslog.
+#
+# Modified 3/8/10: Report creation of initial manifest in-band (syslog), 
+#                       this will warn us if someone has destroyed our manifest
+#                       to cover their tracks.
+#
+
+
+SYSLOG_PRIORITY=audit.err
+BART_RULES=/etc/bart.rules
+BART_MANIFESTS=/var/tmp
+
+
+
+
+#
+# Modify BASH Internal Field Seperator to newline:
+#
+IFS=`echo -en "\n\b"`
+
+
+#
+# Check for rules:
+#
+if [ -f $BART_RULES ]
+then
+        echo "123" >/dev/null;  
+else
+        echo "$BART_RULES Not Found.  Exiting."
+        exit
+fi
+
+#
+# If an initial manifest exists, create a new one for diff, 
+#       otherwise, create the initial and exit.
+#
+if [ -f $BART_MANIFESTS/bart.manifest.0 ]
+then
+        /usr/bin/bart create -r $BART_RULES > $BART_MANIFESTS/bart.manifest.1
+else
+        /usr/bin/bart create -r $BART_RULES > $BART_MANIFESTS/bart.manifest.0
+        #echo "Created manifest... exit time."
+        /bin/logger -p $SYSLOG_PRIORITY "bartlog: Creating Initial Manifest"
+        exit
+fi
+
+
+#
+# Compare "control" (.0) manifest against new "test" (.1) manifest and log the changes
+#
+
+for i in `/usr/bin/bart compare -r $BART_RULES -p $BART_MANIFESTS/bart.manifest.0 $BART_MANIFESTS/bart.manifest.1 `
+do 
+        /bin/logger -p $SYSLOG_PRIORITY "BART Reports Change: $i"
+done
+
+
+#
+# Finally, rotate for the next run
+#
+/usr/bin/mv $BART_MANIFESTS/bart.manifest.1 $BART_MANIFESTS/bart.manifest.0

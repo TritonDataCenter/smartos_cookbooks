@@ -1,0 +1,9 @@
+## Properties fed to svccfg to augment the auditd service
+setprop policy/cnt=true
+setprop policy/perzone=true
+setprop policy/zonename=true
+setprop policy/argv=true
+setprop audit_syslog/active=true
+setprop audit_syslog/p_flags="all"
+setprop preselection/flags="lo,ua,ss"
+setprop preselection/naflags="lo,ua,ss"

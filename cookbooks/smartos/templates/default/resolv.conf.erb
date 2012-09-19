@@ -1,0 +1,4 @@
+search <%= node[:dns][:search] %>
+<% node[:dns][:nameservers].each do |nameserver| -%>
+nameserver <%= nameserver %>
+<% end -%>

@@ -1,0 +1,10 @@
+= DESCRIPTION:
+
+Joyent Logging configuration, including Syslog, SSH, /etc/default tunings, etc.
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+
+= USAGE:
+

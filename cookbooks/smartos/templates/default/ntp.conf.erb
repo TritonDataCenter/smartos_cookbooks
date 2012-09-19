@@ -1,0 +1,6 @@
+driftfile /var/ntp/ntp.drift
+logfile /var/log/ntp.log
+
+<% node[:ntp][:servers].each do |srv| -%>
+server <%= srv %>
+<% end -%>

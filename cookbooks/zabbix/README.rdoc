@@ -1,0 +1,10 @@
+= DESCRIPTION:
+
+Zabbix agent installation.
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+
+= USAGE:
+

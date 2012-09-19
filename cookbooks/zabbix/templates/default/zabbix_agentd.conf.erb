@@ -1,0 +1,255 @@
+Server=<%= @server_ip %>
+
+
+############ GENERAL PARAMETERS #################
+
+### Option: PidFile
+#       Name of PID file.
+#
+# Mandatory: no
+# Default:
+PidFile=/var/tmp/zabbix_agentd.pid
+
+### Option: LogFile
+#       Name of log file.
+#       If not set, syslog is used.
+#
+# Mandatory: no
+# Default:
+# LogFile=
+
+LogFile=/var/log/zabbix_agentd.log
+
+### Option: LogFileSize
+#       Maximum size of log file in MB.
+#       0 - disable automatic log rotation.
+#
+# Mandatory: no
+# Range: 0-1024
+# Default:
+LogFileSize=30
+
+### Option: DebugLevel
+#       Specifies debug level
+#       0 - no debug
+#       1 - critical information
+#       2 - error information
+#       3 - warnings
+#       4 - for debugging (produces lots of information)
+#
+# Mandatory: no
+# Range: 0-4
+# Default:
+# DebugLevel=3
+
+### Option: SourceIP
+#       Source IP address for outgoing connections.
+#
+# Mandatory: no
+# Default:
+# SourceIP=
+
+### Option: EnableRemoteCommands
+#       Whether remote commands from Zabbix server are allowed.
+#       0 - not allowed
+#       1 - allowed
+#
+# Mandatory: no
+# Default:
+# EnableRemoteCommands=0
+
+### Option: LogRemoteCommands
+#       Enable logging of executed shell commands as warnings
+#       0 - disabled
+#       1 - enabled
+#
+# Mandatory: no
+# Default:
+# LogRemoteCommands=0
+
+##### Passive checks related
+
+### Option: Server
+#       List of comma delimited IP addresses (or hostnames) of Zabbix servers.
+#       No spaces allowed. First entry is used for receiving list of and sending active checks.
+#       Note that hostnames must resolve hostname->IP address and IP address->hostname.
+#       If IPv6 support is enabled then '127.0.0.1', '::127.0.0.1', '::ffff:127.0.0.1' are treated equally.
+#
+# Mandatory: yes
+# Default:
+# Server=
+
+
+### Option: Hostname
+#       Unique, case sensitive hostname.
+#       Required for active checks and must match hostname as configured on the server.
+#
+# Default:
+# Hostname=system.uname
+<% if @node[:zabbix][:hostname] then -%>
+Hostname=<%= @node[:zabbix][:hostname] %>
+<% end -%>
+
+### Option: ListenPort
+#       Agent will listen on this port for connections from the server.
+#
+# Mandatory: no
+# Range: 1024-32767
+# Default:
+# ListenPort=10050
+
+### Option: ListenIP
+#       Agent will listen on the specified interface.
+#
+# Mandatory: no
+# Default:
+ListenIP=<%= @listen_ip %>
+
+
+### Option: DisablePassive
+#       Disable passive checks. The agent will not listen on any TCP port.
+#       Only active checks will be processed.
+#       0 - do not disable
+#       1 - disable
+#
+# Mandatory: no
+# Default:
+# DisablePassive=0
+
+##### Active checks related
+
+### Option: DisableActive
+#       Disable active checks. The agent will work in passive mode listening for server.
+#
+# Mandatory: no
+# Default:
+DisableActive=0
+
+#DisableActive=1
+
+### Option: ServerPort
+#       Server port for retrieving list of and  sending active checks.
+#
+# Mandatory: no
+# Default:
+# ServerPort=10051
+
+### Option: RefreshActiveChecks
+#       How often list of active checks is refreshed, in seconds.
+#
+# Mandatory: no
+# Range: 60-3600
+# Default:
+RefreshActiveChecks=120
+
+### Option: BufferSend
+#       Do not keep data longer than N seconds in buffer.
+#
+# Mandatory: no
+# Range: 1-3600
+# Default:
+# BufferSend=5
+
+### Option: BufferSize
+#       Maximum number of values in a memory buffer. The agent will send
+#       all collected data to Zabbix Server or Proxy if the buffer is full.
+#
+# Mandatory: no
+# Range: 1-65535
+# Default:
+# BufferSize=100
+
+### Option: MaxLinesPerSecond
+#       Maximum number of new lines the agent will send per second to Zabbix Server
+#       or Proxy processing 'log' and 'logrt' active checks.
+#       The provided value will be overridden by the parameter 'maxlines',
+#       provided in 'log' or 'logrt' item keys.
+#
+# Mandatory: no
+# Range: 1-1000
+# Default:
+# MaxLinesPerSecond=100
+
+
+############ ADVANCED PARAMETERS #################
+
+### Option: StartAgents
+#       Number of pre-forked instances of zabbix_agentd that process passive checks.
+#
+# Mandatory: no
+# Range: 1-16
+# Default:
+# StartAgents=3
+
+### Option: Timeout
+#       Spend no more than Timeout seconds on processing
+#
+# Mandatory: no
+# Range: 1-30
+# Default:
+# Timeout=3
+
+### Option: Include
+#       You may include individual files or all files in a directory in the configuration file.
+#
+# Mandatory: no
+# Default:
+# Include=
+
+# Include=/opt/zabbix/etc/zabbix_agent.userparams.conf
+# Include=/opt/zabbix/etc/zabbix_agentd/
+
+
+####### USER-DEFINED MONITORED PARAMETERS #######
+
+### Option: UnsafeUserParameters
+#       Allow all characters to be passed in arguments to user-defined parameters.
+#       0 - do not allow
+#       1 - allow
+#
+# Mandatory: no
+# Range: 0-1
+# Default:
+# UnsafeUserParameters=0
+
+### Option: UserParameter
+#       User-defined parameter to monitor. There can be several user-defined parameters.
+#       Format: UserParameter=<key>,<shell command>
+#       Note that shell command must not return empty string or EOL only.
+#       Example: UserParameter=system.test,who|wc -l
+
+# Dell PERC Checks, Requires "mega_status"
+UserParameter=megaraid.online,grep online /tmp/.mega_status|cut -f2 -d" "
+UserParameter=megaraid.failed,grep failed /tmp/.mega_status|cut -f2 -d" "
+UserParameter=megaraid.rebuilding,grep rebuilding /tmp/.mega_status|cut -f2 -d" "
+UserParameter=megaraid.unknown,grep unknown /tmp/.mega_status|cut -f2 -d" "
+UserParameter=megaraid.prefail,grep predictive /tmp/.mega_status|cut -f2 -d" "
+
+# Flexible User Parameters, for grabbing arbitrary values and state on datasets, services, and zones
+UserParameter=zfs.dataset[*],/usr/sbin/zfs get -Hp -o value -p $2 $1
+UserParameter=smf.status[*],/usr/bin/svcs -Ho state $1
+UserParameter=zones.state[*],/usr/sbin/zoneadm -z $1 list -p | cut -f3 -d":"
+
+# Zone Data Parameters
+UserParameter=zones.count.total,/usr/sbin/zoneadm list -c | grep -v global | wc -l
+UserParameter=zones.count.running,/usr/sbin/zoneadm list | grep -v global | wc -l
+UserParameter=zones.running,/usr/sbin/zoneadm list -c | grep -v global
+UserParameter=zones.configured,/usr/sbin/zoneadm list -c | grep -v global
+
+# ZFS
+UserParameter=zfs.arc.size,/usr/bin/kstat -p zfs:0:arcstats:size | cut -f2
+
+# IPMI System 
+UserParameter=platform.power.usage,/usr/sbin/ipmitool -I bmc sensor list | grep -i watt | awk '{print $4}'
+UserParameter=platform.temp.amb,/usr/sbin/ipmitool -I bmc sensor list | grep Ambient | head -1 | awk '{print $4}'
+UserParameter=platform.sel,/usr/sbin/ipmitool -I bmc sel list
+
+# Network
+UserParameter=nic.external.link,/usr/sbin/dladm show-link -po state <%= @external_nic %>
+
+# MegaCLI check for CacheFlushInterval reporting
+UserParameter=megaraid.cacheflush,/opt/custom/bin/MegaCli -AdpGetProp CacheFlushInterval -aALL|sed -n 's/.*Interval = \([^s]\).*/\1/p'
+
+# ZFS IO throttle health
+UserParameter=zfs.throttle.d_s,/usr/bin/vfsstat -Z -r|grep -v zone|cut -d, -f11|nawk '{ sum += $1 } END { print sum }'
+UserParameter=zfs.throttle.del_t,/usr/bin/vfsstat -Z -r|grep -v zone|cut -d, -f12|nawk '{ sum += $1 } END { print sum }'

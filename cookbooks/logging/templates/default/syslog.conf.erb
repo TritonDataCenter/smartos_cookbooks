@@ -1,0 +1,36 @@
+##
+## SmartOS /etc/syslog.conf
+##
+## This file is managed by Chef!
+##
+
+*.err;kern.notice;auth.notice			/dev/sysmsg
+*.err;kern.debug;daemon.notice;mail.crit	/var/adm/messages
+
+## Don't disturb the administrator on the terminal:
+#*.alert;kern.err;daemon.err			operator
+*.alert						root
+
+*.emerg						*
+
+# if a non-loghost machine chooses to have authentication messages
+# sent to the loghost machine, un-comment out the following line:
+auth.info			ifdef(`LOGHOST', /var/log/authlog, @loghost)
+
+mail.debug			ifdef(`LOGHOST', /var/log/syslog, @loghost)
+
+audit.notice			@<%= @logserver %>
+
+#
+# non-loghost machines will use the following lines to cause "user"
+# log messages to be logged locally.
+#
+ifdef(`LOGHOST', ,
+user.err					/dev/sysmsg
+user.err					/var/adm/messages
+user.alert					`root, operator'
+user.emerg					*
+)
+
+## Send everything to syslog server:
+*.debug						@<%= @logserver %>

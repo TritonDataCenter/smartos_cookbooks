@@ -1,0 +1,16 @@
+## +Joyent SmartOS BART Rules 
+##      benr@joyent.com
+#
+# Attributes: acl, all, contents, dest, devnode, dirmtime, 
+#              gid, lnmtime, mode, mtime, size, type, uid
+
+
+#GLOBAL 
+CHECK all
+IGNORE dirmtime
+
+
+## Local Checks:
+/etc
+
+/opt
