@@ -39,11 +39,10 @@ end
 
 ## Set the Hostname
 ##
-if node.attribute?("hostname")
-  execute "Set hostname to #{node[:hostname]}" do
-    command "/usr/bin/hostname #{node[:hostname]} && /usr/bin/hostname > /etc/nodename"
-    not_if "grep #{node[:hostname]} /etc/nodename"
-  end
+nodename = Chef::Config[:node_name]
+execute "Set hostname to #{nodename}" do
+  command "/usr/bin/hostname #{nodename} && /usr/bin/hostname > /etc/nodename"
+  not_if "grep #{nodename} /etc/nodename"
 end
 
 
