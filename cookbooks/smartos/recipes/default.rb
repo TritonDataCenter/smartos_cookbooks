@@ -42,7 +42,7 @@ end
 if node.attribute?("hostname")
   execute "Set hostname to #{node[:hostname]}" do
     command "/usr/bin/hostname #{node[:hostname]} && /usr/bin/hostname > /etc/nodename"
-    only_if "grep unknown /etc/nodename"
+    not_if "grep #{node[:hostname]} /etc/nodename"
   end
 end
 
