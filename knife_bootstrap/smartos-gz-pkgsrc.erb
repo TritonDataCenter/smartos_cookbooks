@@ -62,31 +62,31 @@ EOP
 ## Copy in the SMF XML
 (
 cat <<'EOX'
-<?xml version='1.0'?>
-<!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
-<service_bundle type='manifest' name='export'>
-  <service name='application/management/chef-client' type='service' version='0'>
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+<service_bundle type="manifest" name="export">
+  <service name="application/management/chef-client" type="service" version="0">
 
-    <create_default_instance enabled='true'/>
+    <create_default_instance enabled="true"/>
     <single_instance/>
 
-    <dependency name='milestone' grouping='require_all' restart_on='none' type='service'>
-      <service_fmri value='svc:/milestone/sysconfig'/>
+    <dependency name="milestone" grouping="require_all" restart_on="none" type="service">
+      <service_fmri value="svc:/milestone/sysconfig"/>
     </dependency>
-    <dependency name='fs-local' grouping='require_all' restart_on='none' type='service'>
-      <service_fmri value='svc:/system/filesystem/local'/>
+    <dependency name="fs-local" grouping="require_all" restart_on="none" type="service">
+      <service_fmri value="svc:/system/filesystem/local"/>
     </dependency>
-    <dependency name='name-services' grouping='optional_all' restart_on='none' type='service'>
-      <service_fmri value='svc:/milestone/name-services'/>
+    <dependency name="name-services" grouping="optional_all" restart_on="none" type="service">
+      <service_fmri value="svc:/milestone/name-services"/>
     </dependency>
-    <dependency name='network' grouping='require_all' restart_on='restart' type='service'>
-      <service_fmri value='svc:/milestone/network'/>
+    <dependency name="network" grouping="require_all" restart_on="restart" type="service">
+      <service_fmri value="svc:/milestone/network"/>
     </dependency>
-    <dependency name='config-file' grouping='require_all' restart_on='refresh' type='path'>
-      <service_fmri value='file://localhost/var/chef/client.rb'/>
+    <dependency name="config-file" grouping="require_all" restart_on="refresh" type="path">
+      <service_fmri value="file://localhost/var/chef/client.rb"/>
     </dependency>
 
-    <exec_method name='start' type='method' exec='/opt/local/bin/chef-client --daemonize --config /var/chef/client.rb --logfile /var/log/chef.log' timeout_seconds='60'>
+    <exec_method name="start" type="method" exec="/opt/local/bin/chef-client --daemonize --config /var/chef/client.rb --logfile /var/log/chef.log" timeout_seconds="60">
       <method_context working_directory="/var/chef">
         <method_credential user="root" group="root" />
         <method_environment>
@@ -95,11 +95,11 @@ cat <<'EOX'
       </method_context>
     </exec_method>
 
-    <exec_method name='stop' type='method' exec=':kill' timeout_seconds='60'/>
+    <exec_method name="stop" type="method" exec=":kill" timeout_seconds="60"/>
 
     <template>
       <common_name>
-        <loctext xml:lang='C'>Opscode Chef Client</loctext>
+        <loctext xml:lang="C">Opscode Chef Client</loctext>
       </common_name>
     </template>
   </service>
