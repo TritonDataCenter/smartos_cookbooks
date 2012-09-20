@@ -37,19 +37,15 @@ template "/etc/resolv.conf" do
  notifies :restart, resources(:service => "name-service-cache"), :immediate
 end
 
-## Create loginlog and sulog
+## Set the Hostname
 ##
-file "/var/adm/loginlog" do
- owner "root"
- group "root"
- mode "0644"
+if node.attribute?("hostname")
+  execute "Set hostname" do
+    command "/usr/bin/hostname #{node[:hostname]} && /usr/bin/hostname > /etc/nodename"
+    only_if "grep unknown /etc/nodename"
+  end
 end
 
-file "/var/adm/sulog" do
- owner "root"
- group "root"
- mode "0644"
-end
 
 ## Enable atime on /var, so that WTMPX and logs work properly
 ##
