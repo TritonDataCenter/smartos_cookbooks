@@ -1,10 +1,15 @@
 = DESCRIPTION:
 
-Zabbix agent installation.
-
-= REQUIREMENTS:
+Zabbix agent installation.  A staticly compiled Zabbix agent is included in this cookbook.
 
 = ATTRIBUTES:
 
+
+default[:zabbix][:server]:: IP Address or FQDN of Zabbix Proxy or Server.
+
+default[:zabbix][:external_nic]:: Public NIC to monitor
+
 = USAGE:
+
+Include zabbix::agent in your run_list
 

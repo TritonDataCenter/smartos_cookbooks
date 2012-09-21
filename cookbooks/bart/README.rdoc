@@ -1,8 +1,6 @@
 = DESCRIPTION:
 
-= REQUIREMENTS:
+Installs and configures BARTlog, a tool for running BART daily and outputting notifications via syslog.
 
-= ATTRIBUTES:
-
-= USAGE:
-
+BART is the Basic Auditing & Reporting Tool; is is the SmartOS equivilent of Tripwire.  For more information please refer to:
+http://www.cuddletech.com/blog/pivot/entry.php?id=1046

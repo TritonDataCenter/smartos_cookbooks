@@ -2,9 +2,6 @@
 
 Joyent Logging configuration, including Syslog, SSH, /etc/default tunings, etc.
 
-= REQUIREMENTS:
-
 = ATTRIBUTES:
 
-= USAGE:
-
+default[:syslog][:server]:: Remote Syslog server to send log messages to.

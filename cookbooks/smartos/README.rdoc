@@ -1,9 +1,29 @@
 = DESCRIPTION:
 
-= REQUIREMENTS:
+The basic SmartOS cookbook responsible for applying changes which should be applied to _all_ nodes.  This should always be the first cookbook/recipe in your run_list.
 
+= RECIPES:
+
+default::
+
+motd:: Uses an ERB template to create /etc/motd
+
+nicstat:: Install Tim Cook's _nicstat_ tool to /opt/custom/bin.
+
+ntp:: Configures NTP
+
+ssh:: Manage the Root SSH User Configuration
 
 = ATTRIBUTES:
 
-= USAGE:
+default[:ntp][:servers]:: An array of NTP servers.  _Defaults to NTP pool servers._
 
+default[:dns][:search]:: DNS resolver default search domain. _Defaults to smartos.org._
+
+default[:dns][:nameservers]:: An array of DNS servers used by the DNS resolver. _Defaults to OpenDNS servers._
+
+default[:ssh][:pubkey]:: If a URL to an SSH public key is present, it is added to the root users account (/root/.ssh/).  _There is no default, if parameter is missing no action is taken._
+
+default[:ssh][:privkey]:: If a URL to an SSH private key is present, it is added to the root users account (/root/.ssh/).  _There is no default, if parameter is missing no action is taken._
+
+default[:ssh][:authorized_keys]:: If an array of public keys are present, they are added to the root users /root/.ssh/authorized_keys file.  _There is no default, if parameter is missing no action is taken._
