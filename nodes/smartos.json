@@ -1,21 +1,3 @@
 { 
-  "recipes": [  "smartos", "zabbix::agent", "ldap", "ldap::zfs" ],
-
-  "zabbix": {
-    "server": "192.168.100.10"
-  },
-  "ldap": {
-        "priserver": {
-                "name": "ldap01.me.com", 
-                "ip": "192.168.100.11"
-        },
-        "secserver": {
-                "name": "ldap02.me.com", 
-                "ip": "192.168.100.12"
-        }
-  },
-  "ssh": {
-        "authorized_keys": [
-                "ssh-dss .................... me@macbook" ]
-  }
+  "recipes": [  "smartos", "bart" ]
 }

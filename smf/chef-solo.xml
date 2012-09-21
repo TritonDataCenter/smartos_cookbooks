@@ -39,7 +39,7 @@
 
     <template>
       <common_name>
-        <loctext xml:lang='C'>chef-solo Chef client</loctext>
+        <loctext xml:lang='C'>Chef Solo Service</loctext>
       </common_name>
     </template>
   </service>
